@@ -7,143 +7,920 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --blue-dark:  #095480; --blue-mid:   #0F8FD9; --blue-main:  #0F8FD9;
-    --blue-light: #ADD3E8; --blue-pale:  #B0D5EA; --white:      #ffffff;
-    --gray-50:    #f0f7fb; --gray-100:   #dceef6; --gray-300:   #93b8cd;
-    --gray-500:   #4a7a96; --gray-700:   #0c3a52; --green:      #22c55e;
-    --yellow:     #f59e0b; --red:        #ef4444; --sidebar-w:  220px;
-    --topbar-h:   52px;    --radius:     10px;    --shadow:     0 4px 20px rgba(9,84,128,.13);
-    --font-title: 'Poppins', sans-serif; --font-body:  'Poppins', sans-serif;
+    --blue-dark:  #095480;
+    --blue-mid:   #0F8FD9;
+    --blue-main:  #0F8FD9;
+    --blue-light: #ADD3E8;
+    --blue-pale:  #B0D5EA;
+    --accent:     #ADD3E8;
+    --white:      #ffffff;
+    --gray-50:    #f0f7fb;
+    --gray-100:   #dceef6;
+    --gray-300:   #93b8cd;
+    --gray-500:   #4a7a96;
+    --gray-700:   #0c3a52;
+    --green:      #22c55e;
+    --yellow:     #f59e0b;
+    --red:        #ef4444;
+    --sidebar-w:  220px;
+    --topbar-h:   52px;
+    --radius:     10px;
+    --shadow:     0 4px 20px rgba(9,84,128,.13);
+
+    /* Typography */
+    --font-title: 'Poppins', sans-serif;
+    --font-body:  'Poppins', sans-serif;
+    --fw-title:   700;
+    --fw-body:    400;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-700); min-height: 100vh; }
+
+  body {
+    font-family: var(--font-body);
+    font-weight: var(--fw-body);
+    background: var(--gray-50);
+    color: var(--gray-700);
+    min-height: 100vh;
+  }
 
   /* ─── SCROLLBAR ─── */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--blue-pale); border-radius: 99px; }
 
-  /* ─── LOGIN PAGE ─── */
-  #page-login { min-height: 100vh; display: flex; flex-direction: column; background: #e8eef2; position: relative; overflow: hidden; }
-  #page-login::after { content: ''; position: absolute; bottom: -80px; left: -60px; right: -60px; height: 260px; background: linear-gradient(160deg, var(--blue-dark) 0%, var(--blue-mid) 100%); border-radius: 60% 60% 0 0 / 40% 40% 0 0; z-index: 0; }
-  .login-topbar { height: 56px; background: var(--blue-dark); display: flex; align-items: center; padding: 0 36px; gap: 0; flex-shrink: 0; position: relative; z-index: 2; }
-  .login-topbar-logo { display: flex; align-items: center; gap: 8px; margin-right: auto; }
-  .login-topbar-logobox { background: var(--white); border: 2px solid var(--blue-light); border-radius: 6px; padding: 3px 8px; font-family: var(--font-title); font-weight: 700; font-size: .72rem; color: var(--blue-dark); text-align: center; }
-  .login-topbar-logobox span { display: block; color: #c0392b; font-size: .55rem; letter-spacing: .02em; }
-  .login-topbar-nav { display: flex; gap: 0; }
-  .login-topbar-nav a { color: var(--white); text-decoration: none; font-size: .9rem; font-weight: 500; padding: 6px 32px; position: relative; transition: opacity .2s; }
-  .login-topbar-nav a.active::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 60%; height: 2px; background: var(--white); border-radius: 2px; }
-  .login-topbar-nav a:hover { opacity: .8; }
-  .login-center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 24px 120px; position: relative; z-index: 1; }
-  .login-card { display: flex; width: 700px; max-width: 100%; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 48px rgba(9,84,128,.22); }
-  .lc-left { width: 240px; flex-shrink: 0; background: var(--blue-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; gap: 24px; }
-  .lc-logo-circle { width: 130px; height: 130px; border-radius: 50%; background: var(--white); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,0,0,.25); gap: 2px; }
-  .lc-wordmark { font-family: var(--font-title); font-weight: 800; font-size: 1.1rem; color: var(--blue-dark); letter-spacing: .04em; }
-  .lc-sub { font-family: var(--font-title); font-weight: 600; font-size: .38rem; color: #c0392b; letter-spacing: .08em; text-align: center; text-transform: uppercase; }
-  .lc-tagline { color: var(--white); text-align: center; font-family: var(--font-title); font-weight: 700; font-size: 1.15rem; line-height: 1.4; }
-  .lc-right { flex: 1; background: #f5f7fa; padding: 44px 40px; display: flex; flex-direction: column; justify-content: center; }
-  .lc-right h3 { font-family: var(--font-title); font-weight: 700; font-size: 1.6rem; color: var(--blue-mid); margin-bottom: 24px; }
-  .lc-field { margin-bottom: 16px; }
-  .lc-field label { display: block; font-size: .82rem; color: var(--gray-700); margin-bottom: 5px; }
-  .lc-field input { width: 100%; padding: 11px 14px; border: none; border-radius: 8px; background: #dde4eb; font-family: var(--font-body); font-size: .9rem; outline: none; }
-  .lc-field input:focus { background: var(--white); box-shadow: 0 0 0 2px var(--blue-mid); }
-  .lc-hint { font-size: .75rem; color: var(--gray-500); text-align: center; line-height: 1.6; margin: 16px 0; }
-  #login-error { color: var(--red); font-size: .8rem; margin-bottom: 10px; display: none; text-align: center; }
-  .btn-signin { width: 100%; padding: 13px; background: var(--blue-dark); color: var(--white); border: none; border-radius: 8px; font-family: var(--font-title); font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .2s, transform .15s; }
-  .btn-signin:hover { background: var(--blue-mid); transform: translateY(-1px); }
+  /* ══════════════════════════════════════
+     LOGIN PAGE
+  ══════════════════════════════════════ */
+  #page-login {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #e8eef2;
+    position: relative;
+    overflow: hidden;
+  }
 
-  /* ─── MAIN LAYOUT ─── */
+  #page-login::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -60px;
+    right: -60px;
+    height: 260px;
+    background: linear-gradient(160deg, var(--blue-dark) 0%, var(--blue-mid) 100%);
+    border-radius: 60% 60% 0 0 / 40% 40% 0 0;
+    z-index: 0;
+  }
+
+  .login-topbar {
+    height: 56px;
+    background: var(--blue-dark);
+    display: flex;
+    align-items: center;
+    padding: 0 36px;
+    gap: 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .login-topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: auto;
+  }
+
+  .login-topbar-logobox {
+    background: var(--white);
+    border: 2px solid var(--blue-light);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: .72rem;
+    color: var(--blue-dark);
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  .login-topbar-logobox span {
+    display: block;
+    color: #c0392b;
+    font-size: .55rem;
+    letter-spacing: .02em;
+  }
+
+  .login-topbar-nav { display: flex; gap: 0; }
+  .login-topbar-nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: .9rem;
+    font-weight: 500;
+    padding: 6px 32px;
+    position: relative;
+    transition: opacity .2s;
+  }
+
+  .login-topbar-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+  }
+
+  .login-topbar-nav a:hover { opacity: .8; }
+
+  .login-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px 120px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .login-card {
+    display: flex;
+    width: 700px;
+    max-width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 48px rgba(9,84,128,.22);
+  }
+
+  .lc-left {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--blue-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    gap: 24px;
+  }
+
+  .lc-logo-circle {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,.25);
+    gap: 2px;
+  }
+
+  .lc-logo-circle .lc-wordmark {
+    font-family: var(--font-title);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--blue-dark);
+    letter-spacing: .04em;
+    line-height: 1;
+  }
+
+  .lc-logo-circle .lc-sub {
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: .38rem;
+    color: #c0392b;
+    letter-spacing: .08em;
+    text-align: center;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .lc-tagline {
+    color: var(--white);
+    text-align: center;
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  .lc-right {
+    flex: 1;
+    background: #f5f7fa;
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .lc-right h3 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--blue-mid);
+    margin-bottom: 24px;
+  }
+
+  .lc-field { margin-bottom: 16px; }
+
+  .lc-field label {
+    display: block;
+    font-size: .82rem;
+    font-weight: 400;
+    color: var(--gray-700);
+    margin-bottom: 5px;
+  }
+
+  .lc-field input {
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #dde4eb;
+    font-family: var(--font-body);
+    font-size: .9rem;
+    color: var(--gray-700);
+    outline: none;
+    transition: box-shadow .2s, background .2s;
+  }
+
+  .lc-field input:focus {
+    background: var(--white);
+    box-shadow: 0 0 0 2px var(--blue-mid);
+  }
+
+  .lc-hint {
+    font-size: .75rem;
+    color: var(--gray-500);
+    text-align: center;
+    line-height: 1.6;
+    margin: 16px 0;
+    font-weight: 400;
+  }
+
+  #login-error {
+    color: var(--red);
+    font-size: .8rem;
+    margin-bottom: 10px;
+    display: none;
+    text-align: center;
+  }
+
+  .btn-signin {
+    width: 100%;
+    padding: 13px;
+    background: var(--blue-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-title);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .04em;
+    transition: background .2s, transform .15s;
+  }
+
+  .btn-signin:hover { background: var(--blue-mid); transform: translateY(-1px); }
+  .btn-signin:active { transform: translateY(0); }
+
+  /* ══════════════════════════════════════
+     MAIN LAYOUT (after login)
+  ══════════════════════════════════════ */
   #page-main { display: none; flex-direction: column; min-height: 100vh; }
-  .topbar { height: var(--topbar-h); background: linear-gradient(90deg, var(--blue-dark) 0%, var(--blue-main) 100%); display: flex; align-items: center; padding: 0 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
-  .topbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
-  .topbar-logo-circle { width: 34px; height: 34px; border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-weight: 700; font-size: .7rem; color: var(--blue-dark); }
-  .topbar-brand { color: var(--white); font-family: var(--font-title); font-weight: 700; font-size: .95rem; line-height: 1.15; }
+
+  .topbar {
+    height: var(--topbar-h);
+    background: linear-gradient(90deg, var(--blue-dark) 0%, var(--blue-main) 100%);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,.2);
+  }
+
+  .topbar-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .topbar-logo-circle {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title);
+    font-weight: var(--fw-title);
+    font-size: .7rem;
+    color: var(--blue-dark);
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .topbar-brand {
+    color: var(--white);
+    font-family: var(--font-title);
+    font-weight: var(--fw-title);
+    font-size: .95rem;
+    line-height: 1.15;
+  }
+
   .topbar-brand span { display: block; font-size: .7rem; font-weight: 500; opacity: .7; }
-  .topbar-nav { display: flex; gap: 6px; margin: 0 auto; }
-  .topbar-nav a { color: rgba(255,255,255,.75); text-decoration: none; font-size: .85rem; font-weight: 500; padding: 6px 14px; border-radius: 6px; }
-  .topbar-nav a:hover, .topbar-nav a.active { background: rgba(255,255,255,.15); color: var(--white); }
-  .topbar-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-  .btn-logout { background: rgba(255,255,255,.15); color: var(--white); border: 1px solid rgba(255,255,255,.25); border-radius: 6px; padding: 5px 14px; font-size: .82rem; font-weight: 600; cursor: pointer; }
-  .hamburger { width: 32px; height: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; border-radius: 6px; padding: 4px; }
+
+  .topbar-nav {
+    display: flex;
+    gap: 6px;
+    margin: 0 auto;
+  }
+
+  .topbar-nav a {
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: background .2s, color .2s;
+  }
+
+  .topbar-nav a:hover, .topbar-nav a.active {
+    background: rgba(255,255,255,.15);
+    color: var(--white);
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .btn-logout {
+    background: rgba(255,255,255,.15);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .btn-logout:hover { background: rgba(255,255,255,.25); }
+
+  .hamburger {
+    width: 32px; height: 32px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 5px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background .2s;
+    padding: 4px;
+  }
+
+  .hamburger:hover { background: rgba(255,255,255,.15); }
   .hamburger span { display: block; width: 18px; height: 2px; background: var(--white); border-radius: 2px; }
 
-  .main-body { display: flex; margin-top: var(--topbar-h); min-height: calc(100vh - var(--topbar-h)); position: relative; }
-  
-  .sidebar { width: var(--sidebar-w); background: var(--white); border-right: 1px solid var(--gray-100); display: flex; flex-direction: column; padding: 24px 0; position: fixed; top: var(--topbar-h); right: 0; height: calc(100vh - var(--topbar-h)); transform: translateX(100%); transition: transform .3s; z-index: 90; box-shadow: -4px 0 20px rgba(0,0,0,.08); }
+  /* ─── BODY WRAPPER ─── */
+  .main-body {
+    display: flex;
+    margin-top: var(--topbar-h);
+    min-height: calc(100vh - var(--topbar-h));
+    position: relative;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--white);
+    border-right: 1px solid var(--gray-100);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+    position: fixed;
+    top: var(--topbar-h);
+    right: 0;
+    height: calc(100vh - var(--topbar-h));
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    z-index: 90;
+    box-shadow: -4px 0 20px rgba(0,0,0,.08);
+  }
+
   .sidebar.open { transform: translateX(0); }
-  .sidebar-user { padding: 0 20px 20px; border-bottom: 1px solid var(--gray-100); margin-bottom: 12px; }
-  .sidebar-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; color: var(--white); margin-bottom: 10px; }
+
+  .sidebar-user {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 12px;
+  }
+
+  .sidebar-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title);
+    font-weight: var(--fw-title);
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
   .sidebar-username { font-weight: 700; font-size: .95rem; color: var(--gray-700); }
   .sidebar-role { font-size: .75rem; color: var(--gray-500); }
-  .sidebar-logo { padding: 0 20px 12px; border-bottom: 1px solid var(--gray-100); margin-bottom: 12px; display: flex; justify-content: center; }
+
+  .sidebar-logo {
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sidebar-logo img { width: 80px; }
+
   .sidebar-menu { list-style: none; padding: 0 10px; }
-  .sidebar-menu li a, .sidebar-menu li button { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: var(--gray-500); font-size: .88rem; font-weight: 600; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
-  .sidebar-menu li a:hover, .sidebar-menu li button:hover { background: var(--gray-50); color: var(--blue-main); }
-  .sidebar-menu li a.active { background: var(--blue-pale); color: var(--blue-main); }
+
+  .sidebar-menu li a, .sidebar-menu li button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--gray-500);
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    transition: background .15s, color .15s;
+  }
+
+  .sidebar-menu li a:hover, .sidebar-menu li button:hover {
+    background: var(--gray-50);
+    color: var(--blue-main);
+  }
+
+  .sidebar-menu li a.active, .sidebar-menu li button.active {
+    background: var(--blue-pale);
+    color: var(--blue-main);
+  }
+
+  .sidebar-menu .icon { font-size: 1rem; width: 20px; text-align: center; }
+
   .sidebar-divider { height: 1px; background: var(--gray-100); margin: 8px 10px; }
 
-  .content { flex: 1; padding: 30px; min-width: 0; }
-  .page-title { font-family: var(--font-title); font-size: 1.5rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 24px; }
-  
-  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-  .stat-card { background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-dark) 100%); border-radius: var(--radius); padding: 20px; color: var(--white); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; overflow: hidden; }
-  .stat-card::before { content: ''; position: absolute; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.07); bottom: -20px; right: -20px; }
-  .stat-label { font-size: .72rem; font-weight: 600; opacity: .8; text-transform: uppercase; }
-  .stat-value { font-size: 2.4rem; font-weight: 700; line-height: 1; }
+  /* ─── CONTENT ─── */
+  .content {
+    flex: 1;
+    padding: 30px;
+    min-width: 0;
+  }
 
-  .table-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-  .table-card-head { padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--gray-100); }
-  .table-card-head h4 { font-size: 1.05rem; font-weight: 700; color: var(--blue-dark); }
-  .badge-live { background: rgba(34,197,94,.12); color: var(--green); font-size: .72rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; display: flex; align-items: center; gap: 5px; }
-  .badge-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 1.4s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.7); } }
+  .page-title {
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: var(--fw-title);
+    color: var(--blue-dark);
+    margin-bottom: 24px;
+  }
+
+  /* ─── STAT CARDS ─── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-dark) 100%);
+    border-radius: var(--radius);
+    padding: 20px;
+    color: var(--white);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s;
+  }
+
+  .stat-card:hover { transform: translateY(-3px); }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.07);
+    bottom: -20px; right: -20px;
+  }
+
+  .stat-label { font-size: .72rem; font-weight: 600; opacity: .8; text-transform: uppercase; letter-spacing: .04em; }
+  .stat-value { font-family: var(--font-title); font-size: 2.4rem; font-weight: var(--fw-title); line-height: 1; }
+
+  /* ─── TABLE ─── */
+  .table-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .table-card-head {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .table-card-head h4 {
+    font-family: var(--font-title);
+    font-size: 1.05rem;
+    font-weight: var(--fw-title);
+    color: var(--blue-dark);
+  }
+
+  .badge-live {
+    background: rgba(34,197,94,.12);
+    color: var(--green);
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .badge-live::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.4s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .5; transform: scale(.7); }
+  }
 
   table { width: 100%; border-collapse: collapse; }
-  thead th { background: var(--gray-50); padding: 11px 16px; text-align: left; font-size: .72rem; font-weight: 700; color: var(--gray-500); text-transform: uppercase; }
+
+  thead th {
+    background: var(--gray-50);
+    padding: 11px 16px;
+    text-align: left;
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
   tbody tr { border-bottom: 1px solid var(--gray-100); transition: background .15s; }
+  tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: var(--gray-50); }
-  tbody td { padding: 13px 16px; font-size: .86rem; color: var(--gray-700); }
-  .td-id { font-weight: 700; color: var(--blue-mid); }
-  
-  .status-badge { display: inline-block; padding: 3px 12px; border-radius: 99px; font-size: .72rem; font-weight: 700; }
-  .status-selesai  { background: rgba(34,197,94,.12); color: var(--green); }
+
+  tbody td {
+    padding: 13px 16px;
+    font-size: .86rem;
+    color: var(--gray-700);
+  }
+
+  .td-id { font-family: var(--font-title); font-weight: 700; color: var(--blue-mid); }
+  .td-name { font-weight: 600; }
+
+  .status-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 99px;
+    font-size: .72rem;
+    font-weight: 700;
+  }
+
+  .status-selesai  { background: rgba(34,197,94,.12);  color: var(--green); }
   .status-proses   { background: rgba(245,158,11,.12); color: var(--yellow); }
-  .status-antrian  { background: rgba(15,143,217,.10); color: var(--blue-mid); }
-  .status-batal    { background: rgba(239,68,68,.1); color: var(--red); }
-  .btn-icon { background: none; border: none; cursor: pointer; color: var(--blue-main); font-size: 1.1rem; padding: 4px 6px; border-radius: 6px; }
+  .status-antrian  { background: rgba(15,143,217,.10);  color: var(--blue-mid); }
+  .status-batal    { background: rgba(239,68,68,.1);   color: var(--red); }
+
+  .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--blue-main);
+    font-size: 1.1rem;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background .15s;
+  }
+
   .btn-icon:hover { background: var(--blue-pale); }
 
-  /* ─── MODAL DIPERBAIKI (TIDAK MENGHALANGI KLIK) ─── */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(9,84,128,.35); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; pointer-events: none; }
-  .modal-overlay.open { display: flex; pointer-events: auto; }
-  .modal { background: var(--white); border-radius: 16px; padding: 32px; width: 500px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .modal-title { font-size: 1.2rem; font-weight: 700; color: var(--blue-dark); }
-  .modal-close { background: var(--gray-100); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .customer-card { display: flex; align-items: flex-start; gap: 18px; background: var(--gray-50); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; }
-  .customer-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; color: var(--white); flex-shrink: 0; }
-  .customer-info h4 { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+  /* ─── MODAL (DENGAN POINTER EVENTS) ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(9,84,128,.35);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Penting: Agar tidak menghalangi klik ke tabel */
+  }
+
+  .modal-overlay.open { 
+    display: flex; 
+    pointer-events: auto; /* Penting: Mengaktifkan klik saat modal terbuka */
+  }
+
+  .modal {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    width: 500px;
+    max-width: 95vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    animation: modalIn .25s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  @keyframes modalIn {
+    from { transform: scale(.88); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .modal-title {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    font-weight: var(--fw-title);
+    color: var(--blue-dark);
+  }
+
+  .modal-close {
+    background: var(--gray-100);
+    border: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+
+  .modal-close:hover { background: var(--gray-300); }
+
+  .customer-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+
+  .customer-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title);
+    font-weight: var(--fw-title);
+    font-size: 1.3rem;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .customer-info p { font-size: .8rem; color: var(--gray-500); margin-bottom: 2px; }
+  .customer-info h4 { font-weight: 700; font-size: 1rem; color: var(--gray-700); margin-bottom: 4px; }
   .customer-info span { font-size: .78rem; color: var(--gray-500); }
-  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-  .info-item label { font-size: .7rem; font-weight: 700; color: var(--gray-300); text-transform: uppercase; display: block; margin-bottom: 3px; }
-  .info-item p { font-size: .88rem; font-weight: 600; color: var(--gray-700); }
-  .history-table h5 { font-size: .95rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 10px; }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .info-item label {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--gray-300);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .info-item p {
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--gray-700);
+  }
+
+  .history-table { margin-top: 20px; }
+  .history-table h5 {
+    font-family: var(--font-title);
+    font-size: .95rem;
+    font-weight: var(--fw-title);
+    color: var(--blue-dark);
+    margin-bottom: 10px;
+  }
+
+  /* ══════════════════════════════════════
+     PROFILE PAGE
+  ══════════════════════════════════════ */
+  #page-profile { display: none; }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .profile-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .profile-avatar-lg {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title);
+    font-weight: var(--fw-title);
+    font-size: 2rem;
+    color: var(--white);
+    margin: 0 auto 14px;
+  }
+
+  .profile-card h3 {
+    font-family: var(--font-title);
+    font-weight: var(--fw-title);
+    font-size: 1.1rem;
+    color: var(--blue-dark);
+    margin-bottom: 4px;
+  }
+
+  .profile-card p {
+    font-size: .82rem;
+    color: var(--gray-500);
+    margin-bottom: 20px;
+    font-weight: var(--fw-body);
+  }
+
+  .btn-edit-photo {
+    background: var(--blue-pale);
+    color: var(--blue-dark);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: background .2s;
+    width: 100%;
+  }
+
+  .btn-edit-photo:hover { background: var(--blue-mid); color: var(--white); }
+
+  .identity-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .identity-card h4 {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    font-weight: var(--fw-title);
+    color: var(--blue-dark);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .identity-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .identity-form-grid .full { grid-column: 1 / -1; }
+
+  .field-group label {
+    display: block;
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--gray-300);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+
+  .field-group input, .field-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-100);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: .88rem;
+    color: var(--gray-700);
+    background: var(--gray-50);
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  .field-group input:focus, .field-group select:focus {
+    border-color: var(--blue-dark);
+    background: var(--white);
+  }
+
+  .btn-save {
+    margin-top: 20px;
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-family: var(--font-title);
+    font-size: .95rem;
+    font-weight: var(--fw-title);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(9,84,128,.3);
+    transition: transform .15s;
+  }
+
+  .btn-save:hover { transform: translateY(-1px); }
 
   /* ─── TOAST ─── */
-  .toast { position: fixed; bottom: 28px; right: 28px; background: var(--blue-dark); color: var(--white); padding: 12px 20px; border-radius: 10px; font-size: .85rem; font-weight: 600; transform: translateY(20px); opacity: 0; pointer-events: none; transition: all .3s; z-index: 10000; }
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--blue-dark);
+    color: var(--white);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: .85rem;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s;
+    z-index: 999;
+  }
+
   .toast.show { transform: translateY(0); opacity: 1; }
 
-  #page-profile { display: none; }
-  .profile-grid { display: grid; grid-template-columns: 280px 1fr; gap: 24px; align-items: start; }
-  .profile-card { background: var(--white); border-radius: 16px; padding: 32px 24px; box-shadow: var(--shadow); text-align: center; }
-  .profile-avatar-lg { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 2rem; color: var(--white); margin: 0 auto 14px; }
-  .btn-edit-photo { background: var(--blue-pale); color: var(--blue-dark); border: none; border-radius: 8px; padding: 8px 18px; font-weight: 600; width: 100%; cursor: pointer;}
-  .identity-card { background: var(--white); border-radius: 16px; padding: 28px; box-shadow: var(--shadow); }
-  .identity-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .field-group label { font-size: .72rem; font-weight: 700; color: var(--gray-300); text-transform: uppercase; display: block; margin-bottom: 6px;}
-  .field-group input, .field-group select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-100); border-radius: 8px; font-family: 'Poppins', sans-serif; background: var(--gray-50); outline: none;}
-  .btn-save { margin-top: 20px; background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); color: var(--white); border: none; border-radius: 8px; padding: 11px 28px; font-weight: 700; cursor: pointer; }
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .login-left { display: none; }
+    .login-right { width: 100%; }
+  }
+
+  @media (max-width: 600px) {
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .content { padding: 16px; }
+    .topbar-nav { display: none; }
+    .identity-form-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -151,20 +928,39 @@
 <div id="page-login">
   <div class="login-topbar">
     <div class="login-topbar-logo">
-      <div class="login-topbar-logobox">PAPICILO<span>LAUNDRY KOIN EXPRESS</span></div>
+      <div class="login-topbar-logobox">
+        PAPICILO
+        <span>LAUNDRY KOIN EXPRESS</span>
+      </div>
     </div>
+    <nav class="login-topbar-nav">
+      <a href="#" class="active">SSO</a>
+      <a href="#">IT Center</a>
+      <a href="#">Support</a>
+    </nav>
   </div>
 
   <div class="login-center">
     <div class="login-card">
       <div class="lc-left">
-        <div class="lc-logo-circle"><div class="lc-wordmark">PAPICILO</div></div>
+        <div class="lc-logo-circle">
+          <div class="lc-wordmark">PAPICILO</div>
+          <div class="lc-sub">LAUNDRY KOIN EXPRESS</div>
+        </div>
         <div class="lc-tagline">Hello,<br>Welcome back!</div>
       </div>
+
       <div class="lc-right">
         <h3>Internal Login</h3>
-        <div class="lc-field"><label>Username</label><input type="text" id="inp-user" autocomplete="off" /></div>
-        <div class="lc-field"><label>Password</label><input type="password" id="inp-pass" /></div>
+        <div class="lc-field">
+          <label>Username</label>
+          <input type="text" id="inp-user" autocomplete="off" />
+        </div>
+        <div class="lc-field">
+          <label>Password</label>
+          <input type="password" id="inp-pass" />
+        </div>
+        <p class="lc-hint">For security reasons, please Log Out and Exit your web browser when<br>you are done accessing services that require authentication!</p>
         <div id="login-error">Username atau password salah!</div>
         <button class="btn-signin" onclick="doLogin()">Sign In</button>
       </div>
@@ -178,15 +974,24 @@
       <div class="topbar-logo-circle">P</div>
       <div class="topbar-brand">Papicilo<span>Koin Express</span></div>
     </div>
+    <nav class="topbar-nav">
+      <a href="#" class="active" onclick="showDashboard(event)">SSO</a>
+      <a href="#">IT Center</a>
+      <a href="#">Support</a>
+    </nav>
     <div class="topbar-right">
       <button class="btn-logout" onclick="doLogout()">Log out</button>
-      <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+      <div class="hamburger" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </div>
     </div>
   </header>
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div style="font-weight:700;font-size:1rem;color:var(--blue-dark);text-align:center;">PAPICILO<br><span style="font-size:.7rem;color:var(--gray-500);">papicilo.id@gmail.com</span></div>
+      <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:var(--blue-dark);text-align:center;line-height:1.3;">
+        PAPICILO<br><span style="font-size:.7rem;color:var(--gray-500);">papicilo.id@gmail.com</span>
+      </div>
     </div>
     <div class="sidebar-user">
       <div class="sidebar-avatar" id="sb-avatar">NA</div>
@@ -194,10 +999,26 @@
       <div class="sidebar-role">Karyawan · Outlet Jakal</div>
     </div>
     <ul class="sidebar-menu">
-      <li><a href="#" onclick="showDashboard(event)" class="active" id="menu-dashboard">🏠 Dashboard</a></li>
-      <li><a href="#" onclick="showProfile(event)" id="menu-profile">👤 Profile</a></li>
+      <li><a href="#" onclick="showDashboard(event)" class="active" id="menu-dashboard">
+        <span class="icon">🏠</span> Dashboard
+      </a></li>
+      <li><a href="#" onclick="showProfile(event)" id="menu-profile">
+        <span class="icon">👤</span> Profile
+      </a></li>
       <div class="sidebar-divider"></div>
-      <li><button onclick="doLogout()">🚪 Log Out</button></li>
+      <li><a href="#">
+        <span class="icon">💻</span> IT Center
+      </a></li>
+      <li><a href="#">
+        <span class="icon">🎧</span> Support
+      </a></li>
+      <div class="sidebar-divider"></div>
+      <li><a href="#">
+        <span class="icon">⚙️</span> Settings
+      </a></li>
+      <li><button onclick="doLogout()">
+        <span class="icon">🚪</span> Log Out
+      </button></li>
     </ul>
   </aside>
 
@@ -206,11 +1027,24 @@
 
       <div id="page-dashboard">
         <div class="page-title">Internal Access</div>
+
         <div class="stat-row">
-          <div class="stat-card"><span class="stat-label">Self Service</span><span class="stat-value" id="stat-self">0</span></div>
-          <div class="stat-card"><span class="stat-label">Full Service</span><span class="stat-value" id="stat-full">0</span></div>
-          <div class="stat-card"><span class="stat-label">Order Kiloan</span><span class="stat-value" id="stat-kilo">0</span></div>
-          <div class="stat-card"><span class="stat-label">Total Order</span><span class="stat-value" id="stat-total">0</span></div>
+          <div class="stat-card">
+            <span class="stat-label">Self Service</span>
+            <span class="stat-value" id="stat-self">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Full Service</span>
+            <span class="stat-value" id="stat-full">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Order Kiloan</span>
+            <span class="stat-value" id="stat-kilo">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total Order</span>
+            <span class="stat-value" id="stat-total">0</span>
+          </div>
         </div>
 
         <div class="table-card">
@@ -222,10 +1056,16 @@
             <table>
               <thead>
                 <tr>
-                  <th>ID</th><th>Nama Pelanggan</th><th>Layanan</th><th>Waktu Mulai</th><th>Status</th><th style="text-align:center">Detail</th>
+                  <th>ID</th>
+                  <th>Nama Pelanggan</th>
+                  <th>Layanan</th>
+                  <th>Waktu Mulai</th>
+                  <th>Status</th>
+                  <th style="text-align:center">Detail</th>
                 </tr>
               </thead>
-              <tbody id="order-tbody"></tbody>
+              <tbody id="order-tbody">
+                </tbody>
             </table>
           </div>
         </div>
@@ -243,8 +1083,39 @@
           <div class="identity-card">
             <h4>Identitas Usaha</h4>
             <div class="identity-form-grid">
-              <div class="field-group"><label>Nama</label><input type="text" id="pf-inp-name" value="Papicilo Laundry" /></div>
-              <div class="field-group"><label>E-mail</label><input type="email" id="pf-inp-email" value="papicilo.id@gmail.com" /></div>
+              <div class="field-group">
+                <label>Nama</label>
+                <input type="text" id="pf-inp-name" value="Papicilo Laundry" />
+              </div>
+              <div class="field-group">
+                <label>E-mail</label>
+                <input type="email" id="pf-inp-email" value="papicilo.id@gmail.com" />
+              </div>
+              <div class="field-group">
+                <label>No. Telepon</label>
+                <input type="text" id="pf-inp-phone" value="082134353607" />
+              </div>
+              <div class="field-group">
+                <label>Outlet</label>
+                <select id="pf-inp-outlet">
+                  <option>Outlet Jakal</option>
+                  <option>Outlet Prawirotaman</option>
+                  <option>Outlet Timoho</option>
+                  <option>Outlet Demangan Baru</option>
+                </select>
+              </div>
+              <div class="field-group full">
+                <label>Alamat</label>
+                <input type="text" id="pf-inp-addr" value="Jl. Kaliurang No.18, Manggung, Caturtunggal, Kec. Depok, Kabupaten Sleman, DIY 55284" />
+              </div>
+              <div class="field-group">
+                <label>Kota</label>
+                <input type="text" id="pf-inp-city" value="Sleman" />
+              </div>
+              <div class="field-group">
+                <label>Provinsi</label>
+                <input type="text" id="pf-inp-prov" value="DI Yogyakarta" />
+              </div>
             </div>
             <button class="btn-save" onclick="saveProfile()">💾 Simpan Perubahan</button>
           </div>
@@ -261,31 +1132,48 @@
       <span class="modal-title">Detail Pelanggan</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    
     <div class="customer-card">
       <div class="customer-avatar" id="m-avatar">NA</div>
       <div class="customer-info">
-        <p style="font-size: .8rem; color: var(--gray-500); margin: 0;">Pelanggan</p>
-        <h4 id="m-name" style="margin: 0;">—</h4>
+        <p>Pelanggan</p>
+        <h4 id="m-name">—</h4>
         <span id="m-outlet">Outlet Terdekat</span>
       </div>
     </div>
-    
     <div class="info-grid">
-      <div class="info-item"><label>No. Order</label><p id="m-id">—</p></div>
-      <div class="info-item"><label>Waktu Mulai</label><p id="m-waktu">—</p></div>
-      <div class="info-item"><label>Layanan</label><p id="m-layanan">—</p></div>
-      <div class="info-item"><label>Nomor HP</label><p id="m-hp">—</p></div>
-      <div class="info-item" style="grid-column: span 2;"><label>Alamat</label><p id="m-alamat">—</p></div>
-      <div class="info-item"><label>Status</label><div id="m-status"></div></div>
+      <div class="info-item">
+        <label>No. Order</label>
+        <p id="m-id">—</p>
+      </div>
+      <div class="info-item">
+        <label>Waktu Mulai</label>
+        <p id="m-waktu">—</p>
+      </div>
+      <div class="info-item">
+        <label>Layanan</label>
+        <p id="m-layanan">—</p>
+      </div>
+      <div class="info-item">
+        <label>Nomor HP</label>
+        <p id="m-hp">—</p>
+      </div>
+      <div class="info-item" style="grid-column: span 2;">
+        <label>Alamat</label>
+        <p id="m-alamat">—</p>
+      </div>
+      <div class="info-item" style="grid-column: span 2;">
+        <label>Status</label>
+        <div id="m-status"></div>
+      </div>
     </div>
-    
     <div class="history-table">
       <h5>Riwayat Order</h5>
       <div style="overflow-x:auto">
         <table>
           <thead>
-            <tr><th>Tanggal</th><th>Layanan</th><th>Mesin</th><th>Total</th><th>Status</th></tr>
+            <tr>
+              <th>Tanggal</th><th>Layanan</th><th>Mesin</th><th>Total</th><th>Status</th>
+            </tr>
           </thead>
           <tbody id="m-history">
             <tr><td colspan="5" style="text-align:center;color:var(--gray-300);padding:16px;">Tidak ada riwayat</td></tr>
@@ -293,7 +1181,6 @@
         </table>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -301,43 +1188,72 @@
 
 <script>
 /* ══════════════════════════════════════
-   GLOBAL SCRIPT & DATA
+   DATA & STATE
 ══════════════════════════════════════ */
 const ACCOUNTS = [
   { username: 'admin',    password: 'admin123',   name: 'Admin Papicilo',  initials: 'AP' },
   { username: 'nay',      password: 'nay123',     name: 'Nay Azahra',      initials: 'NA' },
+  { username: 'karyawan', password: 'papicilo',   name: 'Karyawan Jakal',  initials: 'KJ' },
 ];
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_fyb9g26nXUKqpSr0tXsRzOOUfB7uUPLxw16cGBFmhdAoWdVtsO1LqtigxYOzuQGRrg/exec';
+let currentUser = null;
+let sidebarOpen = false;
+
+const STATUS_LIST = ['Selesai', 'Proses kering', 'Proses cuci', 'Antrian'];
+
 let ORDERS = [];
 
+// ==========================================
+// INI ADALAH URL WEB APP YANG BARU
+// ==========================================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_fyb9g26nXUKqpSr0tXsRzOOUfB7uUPLxw16cGBFmhdAoWdVtsO1LqtigxYOzuQGRrg/exec';
+
+// Data riwayat dummy
+const HISTORIES = {
+  '0072': [
+    { tgl: '09-09-2026', layanan: 'Self service', mesin: 'Mesin 5',  total: 'Rp5.000',  status: 'Selesai' },
+    { tgl: '03-08-2026', layanan: 'Self service', mesin: 'Mesin 4',  total: 'Rp10.000', status: 'Selesai' }
+  ]
+};
+
 /* ══════════════════════════════════════
-   1. MENGAMBIL DATA DARI GOOGLE SHEETS
+   FUNGSI FETCH DARI GOOGLE SHEETS
 ══════════════════════════════════════ */
 async function fetchOrdersFromSheets() {
   try {
     const response = await fetch(SCRIPT_URL);
-    if (!response.ok) throw new Error("Gagal mengambil data");
+    if (!response.ok) {
+        throw new Error("HTTP error! Status: " + response.status);
+    }
     
     const data = await response.json();
     
+    if (!Array.isArray(data)) {
+        return;
+    }
+    
+    // Perbarui array ORDERS
     ORDERS = data.map((item, index) => {
-        let waktuTampil = item.waktu;
-        try {
-            const d = new Date(item.waktu);
-            if(!isNaN(d.getTime())) waktuTampil = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
-        } catch(e) {}
-        return { ...item, id: index + 1, waktu: waktuTampil };
-    }).reverse();
+      let waktuTampil = item.waktu;
+      try {
+        const d = new Date(item.waktu);
+        if(!isNaN(d.getTime())) {
+          waktuTampil = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+        }
+      } catch(e) {}
+      
+      return { ...item, id: index + 1, waktu: waktuTampil };
+    }).reverse(); 
     
     renderOrders();
+    
   } catch (error) {
-    console.error('Gagal fetch data:', error);
+    console.error('Gagal mengambil data:', error);
   }
 }
 
 /* ══════════════════════════════════════
-   2. UPDATE STATUS KE GOOGLE SHEETS
+   FUNGSI UPDATE STATUS
 ══════════════════════════════════════ */
 async function updateStatus(id, newStatus) {
     const formData = new FormData();
@@ -346,60 +1262,157 @@ async function updateStatus(id, newStatus) {
     formData.append('status', newStatus);
 
     await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-    showToast("✅ Status diubah menjadi: " + newStatus);
+    showToast("✅ Status berhasil diubah menjadi: " + newStatus);
     fetchOrdersFromSheets(); // Auto-refresh tabel
 }
 
 /* ══════════════════════════════════════
-   3. RENDER TABEL & MODAL
+   LOGIN
+══════════════════════════════════════ */
+function doLogin() {
+  const u = document.getElementById('inp-user').value.trim().toLowerCase();
+  const p = document.getElementById('inp-pass').value;
+  const acc = ACCOUNTS.find(a => a.username === u && a.password === p);
+  const errEl = document.getElementById('login-error');
+  if (!acc) {
+    errEl.style.display = 'block';
+    document.getElementById('inp-pass').value = '';
+    return;
+  }
+  errEl.style.display = 'none';
+  currentUser = acc;
+  document.getElementById('page-login').style.display = 'none';
+  document.getElementById('page-main').style.display = 'flex';
+  document.getElementById('page-main').style.flexDirection = 'column';
+
+  // set user info
+  document.getElementById('sb-avatar').textContent   = acc.initials;
+  document.getElementById('sb-username').textContent = acc.name;
+  document.getElementById('pf-avatar').textContent   = acc.initials;
+  document.getElementById('pf-name').textContent     = acc.name;
+
+  // Langsung tarik data saat berhasil login
+  fetchOrdersFromSheets();
+  
+  // Jalankan penarikan data secara berkala
+  startRealAutoUpdate();
+}
+
+function doLogout() {
+  document.getElementById('page-login').style.display  = 'flex';
+  document.getElementById('page-main').style.display   = 'none';
+  document.getElementById('inp-user').value = '';
+  document.getElementById('inp-pass').value = '';
+  closeSidebar();
+  stopAutoUpdate();
+}
+
+// Enter key on login
+document.getElementById('inp-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('inp-user').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  document.getElementById('sidebar').classList.toggle('open', sidebarOpen);
+}
+
+function closeSidebar() {
+  sidebarOpen = false;
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+/* ══════════════════════════════════════
+   PAGE ROUTING
+══════════════════════════════════════ */
+function showDashboard(e) {
+  if(e) e.preventDefault();
+  document.getElementById('page-dashboard').style.display = 'block';
+  document.getElementById('page-profile').style.display   = 'none';
+  document.getElementById('menu-dashboard').classList.add('active');
+  document.getElementById('menu-profile').classList.remove('active');
+  closeSidebar();
+}
+
+function showProfile(e) {
+  if(e) e.preventDefault();
+  document.getElementById('page-dashboard').style.display = 'none';
+  document.getElementById('page-profile').style.display   = 'block';
+  document.getElementById('menu-profile').classList.add('active');
+  document.getElementById('menu-dashboard').classList.remove('active');
+  closeSidebar();
+}
+
+/* ══════════════════════════════════════
+   RENDER TABLE
 ══════════════════════════════════════ */
 function statusClass(s) {
-  if (s === 'Selesai') return 'status-selesai';
-  if (s && s.startsWith('Proses')) return 'status-proses';
-  return 'status-antrian';
+  if (!s) return 'status-batal';
+  if (s === 'Selesai')       return 'status-selesai';
+  if (s.startsWith('Proses')) return 'status-proses';
+  if (s === 'Antrian')       return 'status-antrian';
+  return 'status-batal';
 }
 
 function renderOrders() {
   const tbody = document.getElementById('order-tbody');
   tbody.innerHTML = '';
+
+  let self = 0, full = 0, kilo = 0;
   
   if (ORDERS.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Belum ada data.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Belum ada data pesanan masuk.</td></tr>';
   } else {
       ORDERS.forEach(o => {
+        const lay = (o.layanan || '').toLowerCase();
+        if (lay.includes('self'))    self++;
+        else if (lay.includes('full')) full++;
+        else kilo++;
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td class="td-id">#${o.id}</td>
+          <td class="td-id">#${o.id.toString().padStart(4, '0')}</td>
           <td class="td-name">${o.name}</td>
           <td>${o.layanan}</td>
           <td>${o.waktu}</td>
           <td><span class="status-badge ${statusClass(o.status)}">${o.status}</span></td>
           <td style="text-align:center">
-            <button class="btn-icon" onclick="openModal('${o.id}')">👁️</button>
+            <button class="btn-icon" title="Lihat detail" onclick="openModal('${o.id}')">👁️</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
   }
+
+  document.getElementById('stat-self').textContent  = self;
+  document.getElementById('stat-full').textContent  = full;
+  document.getElementById('stat-kilo').textContent  = kilo;
+  document.getElementById('stat-total').textContent = ORDERS.length;
 }
 
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
 function openModal(id) {
+  // Menggunakan '==' bukan '===' karena tipe datanya bisa berupa string dari HTML tapi integer di object
   const o = ORDERS.find(x => x.id == id);
   if (!o) return;
 
   const initials = (o.name || 'NN').substring(0,2).toUpperCase();
-  document.getElementById('m-avatar').textContent = initials;
-  document.getElementById('m-name').textContent = o.name;
+  document.getElementById('m-avatar').textContent   = initials;
+  document.getElementById('m-name').textContent     = o.name;
   
-  document.getElementById('m-id').textContent = '#' + o.id;
-  document.getElementById('m-waktu').textContent = o.waktu || '-';
-  document.getElementById('m-layanan').textContent = o.layanan || '-';
-  document.getElementById('m-hp').textContent = o.hp || '-';
-  document.getElementById('m-alamat').textContent = o.alamat || '-';
-  
-  // Render Dropdown Status
+  document.getElementById('m-id').textContent       = '#' + o.id.toString().padStart(4, '0');
+  document.getElementById('m-layanan').textContent  = o.layanan || '-';
+  document.getElementById('m-waktu').textContent    = o.waktu || '-';
+  document.getElementById('m-hp').textContent       = o.hp || '-';
+  document.getElementById('m-alamat').textContent   = o.alamat || '-';
+
+  // Render Dropdown Status dengan CSS In-line agar rapi
   document.getElementById('m-status').innerHTML = `
-    <select onchange="updateStatus('${o.id}', this.value)" style="padding: 5px; border-radius: 5px; border: 1px solid #ccc; font-family: 'Poppins', sans-serif;">
+    <select onchange="updateStatus('${o.id}', this.value)" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--gray-300); font-family: var(--font-body); font-size: 0.85rem; color: var(--gray-700); outline: none; width: 100%; cursor: pointer;">
         <option value="Antrian" ${o.status === 'Antrian' ? 'selected' : ''}>Antrian</option>
         <option value="Proses cuci" ${o.status === 'Proses cuci' ? 'selected' : ''}>Proses Cuci</option>
         <option value="Selesai" ${o.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
@@ -416,7 +1429,14 @@ function closeModal(e) {
 }
 
 /* ══════════════════════════════════════
-   4. UTILS, LOGIN & SIDEBAR
+   PROFILE SAVE
+══════════════════════════════════════ */
+function saveProfile() {
+  showToast('✅ Profil berhasil disimpan!');
+}
+
+/* ══════════════════════════════════════
+   TOAST
 ══════════════════════════════════════ */
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -425,34 +1445,23 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-function doLogin() {
-    const u = document.getElementById('inp-user').value.trim().toLowerCase();
-    const p = document.getElementById('inp-pass').value;
-    const acc = ACCOUNTS.find(a => a.username === u && a.password === p);
-    
-    if (!acc) { 
-        document.getElementById('login-error').style.display = 'block'; 
-        return; 
-    }
-    
-    // Set Profile Data
-    document.getElementById('sb-avatar').textContent = acc.initials;
-    document.getElementById('sb-username').textContent = acc.name;
-    document.getElementById('pf-avatar').textContent = acc.initials;
-    document.getElementById('pf-name').textContent = acc.name;
+/* ══════════════════════════════════════
+   AUTO UPDATE (Membaca Google Sheets Berkala)
+══════════════════════════════════════ */
+let autoTimer = null;
 
-    document.getElementById('page-login').style.display = 'none';
-    document.getElementById('page-main').style.display = 'flex';
-    
+function startRealAutoUpdate() {
+  autoTimer = setInterval(() => {
     fetchOrdersFromSheets();
-    setInterval(fetchOrdersFromSheets, 10000); // Live Update 10 detik
+  }, 10000); 
 }
 
-function doLogout() { location.reload(); }
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-function showDashboard(e) { e.preventDefault(); document.getElementById('page-dashboard').style.display = 'block'; document.getElementById('page-profile').style.display = 'none'; document.getElementById('sidebar').classList.remove('open'); }
-function showProfile(e) { e.preventDefault(); document.getElementById('page-dashboard').style.display = 'none'; document.getElementById('page-profile').style.display = 'block'; document.getElementById('sidebar').classList.remove('open'); }
-function saveProfile() { showToast('✅ Profil berhasil disimpan!'); }
+function stopAutoUpdate() {
+  if (autoTimer) { 
+    clearInterval(autoTimer); 
+    autoTimer = null; 
+  }
+}
 </script>
 </body>
 </html>
