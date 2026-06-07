@@ -1257,13 +1257,23 @@ async function fetchOrdersFromSheets() {
 ══════════════════════════════════════ */
 async function updateStatus(id, newStatus) {
     const formData = new FormData();
-    formData.append('updateStatus', 'true');
-    formData.append('id', id);
-    formData.append('status', newStatus);
+    formData.append('updateStatus', 'true'); // Penanda bahwa ini update
+    formData.append('id', id);               // ID baris
+    formData.append('status', newStatus);    // Status baru
 
-    await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-    showToast("✅ Status berhasil diubah menjadi: " + newStatus);
-    fetchOrdersFromSheets(); // Auto-refresh tabel
+    try {
+        const response = await fetch(SCRIPT_URL, { 
+            method: 'POST', 
+            body: formData 
+        });
+        
+        if (response.ok) {
+            showToast("✅ Status berhasil diubah ke: " + newStatus);
+            fetchOrdersFromSheets(); // Refresh tabel setelah update
+        }
+    } catch (err) {
+        console.error("Gagal update:", err);
+    }
 }
 
 /* ══════════════════════════════════════
