@@ -1256,20 +1256,22 @@ async function fetchOrdersFromSheets() {
    FUNGSI UPDATE STATUS
 ══════════════════════════════════════ */
 async function updateStatus(id, newStatus) {
-    const formData = new FormData();
-    formData.append('updateStatus', 'true'); // Penanda bahwa ini update
-    formData.append('id', id);               // ID baris
-    formData.append('status', newStatus);    // Status baru
+    // Gunakan URLSearchParams agar Google Apps Script bisa membaca e.parameter dengan benar
+    const params = new URLSearchParams();
+    params.append('updateStatus', 'true');
+    params.append('id', id);
+    params.append('status', newStatus);
 
     try {
-        const response = await fetch(SCRIPT_URL, { 
-            method: 'POST', 
-            body: formData 
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
         });
-        
+
         if (response.ok) {
             showToast("✅ Status berhasil diubah ke: " + newStatus);
-            fetchOrdersFromSheets(); // Refresh tabel setelah update
+            fetchOrdersFromSheets();
         }
     } catch (err) {
         console.error("Gagal update:", err);
