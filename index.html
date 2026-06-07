@@ -933,7 +933,6 @@
 <body>
 
 <div id="page-login">
-
   <div class="login-topbar">
     <div class="login-topbar-logo">
       <div class="login-topbar-logobox">
@@ -950,7 +949,6 @@
 
   <div class="login-center">
     <div class="login-card">
-
       <div class="lc-left">
         <div class="lc-logo-circle">
           <div class="lc-wordmark">PAPICILO</div>
@@ -973,13 +971,11 @@
         <div id="login-error">Username atau password salah!</div>
         <button class="btn-signin" onclick="doLogin()">Sign In</button>
       </div>
-
     </div>
   </div>
 </div>
 
 <div id="page-main">
-
   <header class="topbar">
     <div class="topbar-logo">
       <div class="topbar-logo-circle">P</div>
@@ -1133,7 +1129,11 @@
         </div>
       </div>
 
-    </div></div></div><div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">Detail Pelanggan</span>
@@ -1208,10 +1208,12 @@ let sidebarOpen = false;
 
 const STATUS_LIST = ['Selesai', 'Proses kering', 'Proses cuci', 'Antrian'];
 
-// KOSONGKAN ARRAY ORDERS
+// ARRAY KOSONG (Siap menerima data dari Sheets)
 let ORDERS = [];
 
-// MASUKKAN URL YANG SUDAH DIBERIKAN
+// ==========================================
+// INI ADALAH URL YANG KAMU BERIKAN
+// ==========================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQNKsCjkbn_t6db8EaJfq3e8BNt7KQSvGSMzHhiP8mSPCgXIbnAbmJhdTD0Ev6ec-AYg/exec';
 
 // Data riwayat dummy
@@ -1227,7 +1229,7 @@ const HISTORIES = {
 ══════════════════════════════════════ */
 async function fetchOrdersFromSheets() {
   try {
-    console.log("Mencoba mengambil data dari URL Google Sheets..."); // Pelacak 1
+    console.log("Mencoba mengambil data dari URL Google Sheets..."); 
     
     const response = await fetch(SCRIPT_URL);
     if (!response.ok) {
@@ -1235,7 +1237,7 @@ async function fetchOrdersFromSheets() {
     }
     
     const data = await response.json();
-    console.log("Data berhasil ditarik: ", data); // Pelacak 2
+    console.log("Data berhasil ditarik: ", data); 
     
     // Pastikan data adalah array agar tidak error saat di-map
     if (!Array.isArray(data)) {
@@ -1261,7 +1263,6 @@ async function fetchOrdersFromSheets() {
     
   } catch (error) {
     console.error('Gagal mengambil data:', error);
-    // showToast('❌ Gagal sinkronisasi data'); 
   }
 }
 
@@ -1290,10 +1291,10 @@ function doLogin() {
   document.getElementById('pf-avatar').textContent   = acc.initials;
   document.getElementById('pf-name').textContent     = acc.name;
 
-  // 1. Langsung tarik data saat berhasil login
+  // Langsung tarik data saat berhasil login
   fetchOrdersFromSheets();
   
-  // 2. Jalankan penarikan data secara berkala
+  // Jalankan penarikan data secara berkala
   startRealAutoUpdate();
 }
 
