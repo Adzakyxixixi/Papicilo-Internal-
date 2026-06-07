@@ -932,12 +932,8 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     LOGIN PAGE
-══════════════════════════════════════ -->
 <div id="page-login">
 
-  <!-- topbar login -->
   <div class="login-topbar">
     <div class="login-topbar-logo">
       <div class="login-topbar-logobox">
@@ -952,11 +948,9 @@
     </nav>
   </div>
 
-  <!-- center card -->
   <div class="login-center">
     <div class="login-card">
 
-      <!-- left blue -->
       <div class="lc-left">
         <div class="lc-logo-circle">
           <div class="lc-wordmark">PAPICILO</div>
@@ -965,7 +959,6 @@
         <div class="lc-tagline">Hello,<br>Welcome back!</div>
       </div>
 
-      <!-- right form -->
       <div class="lc-right">
         <h3>Internal Login</h3>
         <div class="lc-field">
@@ -985,12 +978,8 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     MAIN APP
-══════════════════════════════════════ -->
 <div id="page-main">
 
-  <!-- TOPBAR -->
   <header class="topbar">
     <div class="topbar-logo">
       <div class="topbar-logo-circle">P</div>
@@ -1009,7 +998,6 @@
     </div>
   </header>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:var(--blue-dark);text-align:center;line-height:1.3;">
@@ -1045,11 +1033,9 @@
     </ul>
   </aside>
 
-  <!-- BODY -->
   <div class="main-body">
     <div class="content">
 
-      <!-- ─── DASHBOARD PAGE ─── -->
       <div id="page-dashboard">
         <div class="page-title">Internal Access</div>
 
@@ -1090,14 +1076,12 @@
                 </tr>
               </thead>
               <tbody id="order-tbody">
-                <!-- populated by JS -->
-              </tbody>
+                </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- ─── PROFILE PAGE ─── -->
       <div id="page-profile">
         <div class="page-title">Profil Karyawan</div>
         <div class="profile-grid">
@@ -1149,14 +1133,7 @@
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main-body -->
-</div><!-- /page-main -->
-
-<!-- ══════════════════════════════════════
-     MODAL — DETAIL PELANGGAN
-══════════════════════════════════════ -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    </div></div></div><div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">Detail Pelanggan</span>
@@ -1214,7 +1191,6 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1232,14 +1208,13 @@ let sidebarOpen = false;
 
 const STATUS_LIST = ['Selesai', 'Proses kering', 'Proses cuci', 'Antrian'];
 
-// --- KOSONGKAN ARRAY ORDERS (Akan diisi dari Google Sheets) ---
+// KOSONGKAN ARRAY ORDERS
 let ORDERS = [];
 
-// --- URL WEB APP DARI GOOGLE APPS SCRIPT ---
-// PENTING: Ganti string di bawah dengan URL yang kamu dapat setelah Deploy
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQNKsCjkbn_t6db8EaJfq3e8BNt7KQSvGSMzHhiP8mSPCgXIbnAbmJhdTD0Ev6ec-AYg/exec'; 
+// MASUKKAN URL YANG SUDAH DIBERIKAN
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQNKsCjkbn_t6db8EaJfq3e8BNt7KQSvGSMzHhiP8mSPCgXIbnAbmJhdTD0Ev6ec-AYg/exec';
 
-// Data dummy riwayat tetap dipertahankan sebagai contoh UI
+// Data riwayat dummy
 const HISTORIES = {
   '0072': [
     { tgl: '09-09-2026', layanan: 'Self service', mesin: 'Mesin 5',  total: 'Rp5.000',  status: 'Selesai' },
@@ -1252,13 +1227,26 @@ const HISTORIES = {
 ══════════════════════════════════════ */
 async function fetchOrdersFromSheets() {
   try {
-    const response = await fetch(SCRIPT_URL);
-    const data = await response.json();
+    console.log("Mencoba mengambil data dari URL Google Sheets..."); // Pelacak 1
     
-    // Perbarui array ORDERS dan format waktu agar rapi
+    const response = await fetch(SCRIPT_URL);
+    if (!response.ok) {
+        throw new Error("HTTP error! Status: " + response.status);
+    }
+    
+    const data = await response.json();
+    console.log("Data berhasil ditarik: ", data); // Pelacak 2
+    
+    // Pastikan data adalah array agar tidak error saat di-map
+    if (!Array.isArray(data)) {
+        console.error("Error dari Apps Script: Format data bukan array.", data);
+        if (data.error) console.error("Pesan Error Apps Script:", data.error);
+        return;
+    }
+    
+    // Perbarui array ORDERS
     ORDERS = data.map(item => {
       let waktuTampil = item.waktu;
-      // Coba format timestamp panjang menjadi Jam:Menit (HH:mm)
       try {
         const d = new Date(item.waktu);
         if(!isNaN(d.getTime())) {
@@ -1267,12 +1255,13 @@ async function fetchOrdersFromSheets() {
       } catch(e) {}
       
       return { ...item, waktu: waktuTampil };
-    }).reverse(); // Di-reverse agar data terbaru ada di atas
+    }).reverse(); 
     
     renderOrders();
+    
   } catch (error) {
     console.error('Gagal mengambil data:', error);
-    // showToast('❌ Gagal sinkronisasi data'); // Aktifkan jika ingin ada notifikasi error
+    // showToast('❌ Gagal sinkronisasi data'); 
   }
 }
 
@@ -1304,7 +1293,7 @@ function doLogin() {
   // 1. Langsung tarik data saat berhasil login
   fetchOrdersFromSheets();
   
-  // 2. Jalankan penarikan data secara berkala (Polling)
+  // 2. Jalankan penarikan data secara berkala
   startRealAutoUpdate();
 }
 
@@ -1371,26 +1360,30 @@ function renderOrders() {
   tbody.innerHTML = '';
 
   let self = 0, full = 0, kilo = 0;
-  ORDERS.forEach(o => {
-    // Penanganan layanan agar case-insensitive
-    const lay = (o.layanan || '').toLowerCase();
-    if (lay.includes('self'))    self++;
-    else if (lay.includes('full')) full++;
-    else kilo++;
+  
+  if (ORDERS.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Belum ada data pesanan masuk.</td></tr>';
+  } else {
+      ORDERS.forEach(o => {
+        const lay = (o.layanan || '').toLowerCase();
+        if (lay.includes('self'))    self++;
+        else if (lay.includes('full')) full++;
+        else kilo++;
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="td-id">#${o.id}</td>
-      <td class="td-name">${o.name}</td>
-      <td>${o.layanan}</td>
-      <td>${o.waktu}</td>
-      <td><span class="status-badge ${statusClass(o.status)}">${o.status}</span></td>
-      <td style="text-align:center">
-        <button class="btn-icon" title="Lihat detail" onclick="openModal('${o.id}')">👁️</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="td-id">#${o.id}</td>
+          <td class="td-name">${o.name}</td>
+          <td>${o.layanan}</td>
+          <td>${o.waktu}</td>
+          <td><span class="status-badge ${statusClass(o.status)}">${o.status}</span></td>
+          <td style="text-align:center">
+            <button class="btn-icon" title="Lihat detail" onclick="openModal('${o.id}')">👁️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+  }
 
   document.getElementById('stat-self').textContent  = self;
   document.getElementById('stat-full').textContent  = full;
@@ -1464,10 +1457,9 @@ function showToast(msg) {
 let autoTimer = null;
 
 function startRealAutoUpdate() {
-  // Menarik data baru dari Spreadsheet setiap 10 detik
   autoTimer = setInterval(() => {
     fetchOrdersFromSheets();
-  }, 10000); // 10000ms = 10 detik
+  }, 10000); 
 }
 
 function stopAutoUpdate() {
