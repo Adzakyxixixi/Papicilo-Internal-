@@ -1233,7 +1233,7 @@ async function fetchOrdersFromSheets() {
     }
     
     // Perbarui array ORDERS
-    ORDERS = data.map((item, index) => {
+    ORDERS = data.map((item) => {
       let waktuTampil = item.waktu;
       try {
         const d = new Date(item.waktu);
@@ -1242,7 +1242,7 @@ async function fetchOrdersFromSheets() {
         }
       } catch(e) {}
       
-      return { ...item, id: index + 1, waktu: waktuTampil };
+      return { ...item, waktu: waktuTampil };
     }).reverse(); 
     
     renderOrders();
