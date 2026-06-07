@@ -1147,31 +1147,13 @@
         <span id="m-outlet">Outlet Jakal</span>
       </div>
     </div>
-    <div class="info-grid">
-      <div class="info-item">
-        <label>No. Order</label>
-        <p id="m-id">—</p>
-      </div>
-      <div class="info-item">
-        <label>Layanan</label>
-        <p id="m-layanan">—</p>
-      </div>
-      <div class="info-item">
-        <label>Mesin</label>
-        <p id="m-mesin">—</p>
-      </div>
-      <div class="info-item">
-        <label>Total Bayar</label>
-        <p id="m-total">—</p>
-      </div>
-      <div class="info-item">
-        <label>Waktu Mulai</label>
-        <p id="m-waktu">—</p>
-      </div>
-      <div class="info-item">
-        <label>Status</label>
-        <p id="m-status">—</p>
-      </div>
+   <div class="info-grid">
+      <div class="info-item"><label>No. Order</label><p id="m-id">—</p></div>
+      <div class="info-item"><label>Layanan</label><p id="m-layanan">—</p></div>
+      <div class="info-item"><label>Nomor HP</label><p id="m-hp">—</p></div>
+      <div class="info-item" style="grid-column: span 2;"><label>Alamat</label><p id="m-alamat">—</p></div>
+      <div class="info-item"><label>Status</label><div id="m-status"></div></div>
+    </div>
     </div>
     <div class="history-table">
       <h5>Riwayat Order</h5>
@@ -1245,6 +1227,17 @@ async function fetchOrdersFromSheets() {
         if (data.error) console.error("Pesan Error Apps Script:", data.error);
         return;
     }
+    async function updateStatus(id, newStatus) {
+    const formData = new FormData();
+    formData.append('updateStatus', 'true');
+    formData.append('id', id);
+    formData.append('status', newStatus);
+
+    // Mengirim perubahan status ke server
+    await fetch(SCRIPT_URL, { method: 'POST', body: formData });
+    showToast("✅ Status diubah menjadi: " + newStatus);
+    fetchOrdersFromSheets(); // Update data di tabel secara otomatis
+}
     
     // Perbarui array ORDERS
     ORDERS = data.map(item => {
@@ -1409,6 +1402,15 @@ function openModal(id) {
   document.getElementById('m-total').textContent    = o.total || '-';
   document.getElementById('m-waktu').textContent    = o.waktu;
   document.getElementById('m-status').innerHTML     = `<span class="status-badge ${statusClass(o.status)}">${o.status}</span>`;
+  document.getElementById('m-hp').textContent = o.hp || '-';
+  document.getElementById('m-alamat').textContent = o.alamat || '-';
+  document.getElementById('m-status').innerHTML = `
+    <select onchange="updateStatus('${o.id}', this.value)" style="padding: 5px; border-radius: 5px;">
+        <option value="Antrian" ${o.status === 'Antrian' ? 'selected' : ''}>Antrian</option>
+        <option value="Proses cuci" ${o.status === 'Proses cuci' ? 'selected' : ''}>Proses Cuci</option>
+        <option value="Selesai" ${o.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
+    </select>
+  `;
 
   const hist = HISTORIES[id] || [];
   const tbody = document.getElementById('m-history');
