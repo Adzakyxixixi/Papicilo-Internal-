@@ -294,31 +294,30 @@ function hitungTotal() {
     }
 }
 
+// SIMPAN KE GOOGLE SHEETS
 async function simpanDetail() {
     if (!idAktif) return;
     const btn = document.getElementById('btn-save-detail');
     btn.innerHTML = '⏳ Menyimpan...';
     btn.disabled = true;
 
-    // Pastikan mengirim dalam format JSON yang sesuai dengan Kode.gs
-    const payload = {
-        action: "updateDetail",
-        id: parseInt(idAktif),
-        status: document.getElementById('m-status-select').value,
-        bobot: document.getElementById('m-bobot').value,
-        total: document.getElementById('m-total').value
-    };
+    const params = new URLSearchParams();
+    params.append('action', 'updateDetail');
+    params.append('id', idAktif);
+    params.append('status', document.getElementById('m-status-select').value);
+    params.append('bobot', document.getElementById('m-bobot').value);
+    params.append('total', document.getElementById('m-total').value);
 
     try {
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
         });
 
         if (response.ok) {
             showToast("✅ Berhasil disimpan!");
-            fetchOrdersFromSheets(); // Refresh tabel
+            fetchOrdersFromSheets();
             closeModal();
         }
     } catch (err) {
